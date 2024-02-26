@@ -27,4 +27,4 @@ jobs:
       env:
         FEWO_URL: ${{ secrets.FEWO_URL }}
       working-directory: ./app
-      run: go run ./app/main.go
+      run: go run main.go
