@@ -16,7 +16,7 @@ func MailOut(content string) {
 
 	// Receiver email address.
 	to := []string{
-		"andre@charton.de",
+		os.Getenv("MAIL_TO"),
 	}
 
 	// smtp server configuration.
