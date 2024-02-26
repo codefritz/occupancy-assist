@@ -24,4 +24,5 @@ jobs:
       run: go version
 
     - name: Run
+      working-directory: ./app
       run: go run ./app/main.go
