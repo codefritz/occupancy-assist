@@ -23,8 +23,5 @@ jobs:
     - name: Display Go version
       run: go version
 
-    - name: Build
-      run: go build -v ./...
-
     - name: Run
-      run: go run -v ./...
+      run: go run ./app/main.go
