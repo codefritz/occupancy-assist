@@ -26,5 +26,10 @@ jobs:
     - name: Run
       env:
         FEWO_URL: ${{ secrets.FEWO_URL }}
+        MAIL_FROM: ${{ secrets.MAIL_FROM }}
+        MAIL_HOST: ${{ secrets.MAIL_HOST }}
+        MAIL_SCRT: ${{ secrets.MAIL_SCRT }}
+        MAIL_TO: ${{ secrets.MAIL_TO }}
+        MAIL_USER: ${{ secrets.MAIL_USER }}
       working-directory: ./app
       run: go run main.go
