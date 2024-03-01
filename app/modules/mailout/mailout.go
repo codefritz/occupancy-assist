@@ -8,29 +8,17 @@ import (
 
 func MailOut(content string) {
 
-	// Sender data.
-	// from := "wp1058313-andre"
-	from := os.Getenv("MAIL_FROM")
-	password := os.Getenv("MAIL_SCRT")
-	user := os.Getenv("MAIL_USER")
-
-	// Receiver email address.
-	to := []string{
-		os.Getenv("MAIL_TO"),
-	}
-
 	// smtp server configuration.
-	smtpHost := os.Getenv("MAIL_HOST")
-	smtpPort := "25"
+	mailProps := mailProperties()
 
 	// Message.
 	message := []byte(headers() + intro() + content)
 
 	// Authentication.
-	auth := smtp.PlainAuth(from, user, password, smtpHost)
+	auth := smtp.PlainAuth(mailProps.from, mailProps.user, mailProps.password, mailProps.smtpHost)
 
 	// Sending email.
-	err := smtp.SendMail(smtpHost+":"+smtpPort, auth, from, to, message)
+	err := smtp.SendMail(mailProps.smtpHost+":"+mailProps.smtpPort, auth, mailProps.from, mailProps.to, message)
 	if err != nil {
 		log.Println(err)
 		return
@@ -44,4 +32,24 @@ func intro() string {
 
 func headers() string {
 	return "Subject: Buchungskalender\n\n"
+}
+
+func mailProperties() MailProperties {
+	return MailProperties{
+		from:     os.Getenv("MAIL_FROM"),
+		password: os.Getenv("MAIL_SCRT"),
+		user:     os.Getenv("MAIL_USER"),
+		to:       []string{os.Getenv("MAIL_TO")},
+		smtpHost: os.Getenv("MAIL_HOST"),
+		smtpPort: "25",
+	}
+}
+
+type MailProperties struct {
+	from     string
+	password string
+	user     string
+	to       []string
+	smtpHost string
+	smtpPort string
 }
