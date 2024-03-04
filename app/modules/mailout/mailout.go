@@ -6,13 +6,17 @@ import (
 	"os"
 )
 
+const MSG_INTRO = "Der aktuelle Buchungskalender zur Ferienwohnung Strandsommer E10.\n\n"
+const HEADER_SUBJECT = "Subject: Buchungskalender"
+const HEADER_END = "\n\n"
+
 func MailOut(content string) {
 
 	// smtp server configuration.
 	mailProps := mailProperties()
 
 	// Message.
-	message := []byte(headers() + intro() + content)
+	message := []byte(mailHeaders() + intro() + content)
 
 	// Authentication.
 	auth := smtp.PlainAuth(mailProps.from, mailProps.user, mailProps.password, mailProps.smtpHost)
@@ -27,11 +31,12 @@ func MailOut(content string) {
 }
 
 func intro() string {
-	return "Der aktuelle Buchungskalender zur Ferienwohnung Strandsommer E10.\n\n"
+	return MSG_INTRO
 }
 
-func headers() string {
-	return "Subject: Buchungskalender\n\n"
+func mailHeaders() string {
+	return HEADER_SUBJECT +
+		HEADER_END
 }
 
 func mailProperties() MailProperties {
