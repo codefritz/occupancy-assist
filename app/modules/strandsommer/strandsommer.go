@@ -37,9 +37,9 @@ func Check() string {
 
 func occupied(s bool) string {
 	if s {
-		return "frei"
+		return "belegt"
 	}
-	return "belegt"
+	return "frei"
 }
 
 func fetchJson(url string) string {
