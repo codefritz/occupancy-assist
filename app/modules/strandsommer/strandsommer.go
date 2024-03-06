@@ -21,7 +21,7 @@ func Check() string {
 	i := 0
 	ctx := 0
 
-	result := "Buchungsplan:\n\n"
+	result := "*** Belegungsplan ***\n\n"
 
 	for _, s := range strings {
 		date := start.AddDate(0, 0, i)
