@@ -17,7 +17,9 @@ func Check() string {
 	url := os.Getenv("FEWO_URL")
 	strings := toOccupancyArray(fetchJson(url))
 
-	start := time.Now()
+  	offset := int(time.Now().Weekday()) - 1
+	start := time.Now().AddDate(0, 0, -offset)
+
 	i := 0
 	ctx := 0
 
