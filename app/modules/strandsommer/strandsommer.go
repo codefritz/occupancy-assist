@@ -12,7 +12,7 @@ import (
 
 const MARKER_FREE = "Y"
 
-func Check() string {
+func Check() (string, int) {
 	log.Print("Start fetching occupancy data...")
 	url := os.Getenv("FEWO_URL")
 	strings := toOccupancyArray(fetchJson(url))
@@ -34,7 +34,7 @@ func Check() string {
 		result += date.Format("2006-01-02") + ": " + occupied(s) + "\n"
 	}
 	log.Println(result)
-	return "Belegte Tage: " + fmt.Sprint(ctx) + "\n" + result
+	return "Belegte Tage: " + fmt.Sprint(ctx) + "\n" + result, ctx
 }
 
 func occupied(s bool) string {
