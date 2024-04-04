@@ -25,6 +25,9 @@ jobs:
 
     - name: Run
       env:
+        DB_URL: ${{ secrets.DB_URL }}
+        DB_USER: ${{ secrets.DB_USER }}
+        DB_PASS: ${{ secrets.DB_PASS }}
         FEWO_URL: ${{ secrets.FEWO_URL }}
         MAIL_FROM: ${{ secrets.MAIL_FROM }}
         MAIL_HOST: ${{ secrets.MAIL_HOST }}
