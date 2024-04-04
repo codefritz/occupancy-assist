@@ -13,6 +13,8 @@ import (
 var db *sql.DB
 
 func UpdateBookings(reportinDate time.Time, numDays int) {
+	log.Print("Store analytics data for date: %s ...", string(reportinDate))
+
 	connect()
 
 	query := "INSERT INTO `bookings_history` (`reporting_date`, `days_booked`) VALUES (?, ?);"
