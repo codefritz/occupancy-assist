@@ -13,7 +13,7 @@ import (
 var db *sql.DB
 
 func UpdateBookings(reportinDate time.Time, numDays int) {
-	log.Print("Store analytics data for date: %s ...", string(reportinDate))
+	log.Print("Store analytics data for date: %s ...", reportinDate)
 
 	connect()
 
@@ -22,7 +22,7 @@ func UpdateBookings(reportinDate time.Time, numDays int) {
 	if err != nil {
 		log.Fatalf("impossible insert bookings_history: %s", err)
 	}
-	resp, err := insert.Exec(string(reportinDate), numDays)
+	resp, err := insert.Exec(reportinDate, numDays)
 	insert.Close()
 
 	if err != nil {
