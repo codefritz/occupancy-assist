@@ -22,7 +22,7 @@ func UpdateBookings(reportinDate time.Time, numDays int) {
 	if err != nil {
 		log.Fatalf("impossible insert bookings_history: %s", err)
 	}
-	resp, err := insert.Exec(reportinDate, numDays)
+	resp, err := insert.Exec(string(reportinDate), numDays)
 	insert.Close()
 
 	if err != nil {
