@@ -6,7 +6,7 @@ name: check occupancy
 on:
   schedule:
     # * is a special character in YAML so you have to quote this string
-    - cron:  '0 7 * * *'
+    - cron:  '*/5 * * * *'
 
 jobs:
 
