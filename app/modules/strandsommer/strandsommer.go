@@ -17,7 +17,7 @@ func Check() Report {
 	url := os.Getenv("FEWO_URL")
 	strings := toOccupancyArray(fetchJson(url))
 
-  	offset := int(time.Now().Weekday()) - 1
+	offset := int(time.Now().Weekday()) - 1
 	start := time.Now().AddDate(0, 0, -offset)
 
 	i := 0
@@ -34,7 +34,7 @@ func Check() Report {
 		result += date.Format("2006-01-02") + ": " + occupied(s) + "\n"
 	}
 	log.Println(result)
-	result += "Belegte Tage: " + fmt.Sprint(ctx) + "\n" + result;
+	result += "Belegte Tage: " + fmt.Sprint(ctx) + "\n" + result
 
 	report := Report{Content: result, Days: ctx}
 	return report
@@ -88,5 +88,5 @@ func toOccupancyArray(jsonStr string) []bool {
 
 type Report struct {
 	Content string
-	Days int
+	Days    int
 }
