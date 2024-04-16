@@ -8,8 +8,7 @@ import (
 )
 
 func main() {
-	// Call the function
-	result, ctx := strandsommer.Check()
-	analytics.UpdateBookings(time.Now(), ctx)
-	mailout.MailOut(result)
+	report := strandsommer.Check()
+	analytics.UpdateBookings(time.Now(), report.Days)
+	mailout.MailOut(report.Content)
 }
