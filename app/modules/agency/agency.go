@@ -19,8 +19,9 @@ func Check() models.Report {
 	log.Print("Start fetching occupancy data...")
 	url := os.Getenv("FEWO_URL")
 	strings := toOccupancyArray(fetchJson(url))
-	offset := int(time.Now().Weekday()) - 1
-	start := time.Now().AddDate(0, 0, -offset)
+	reportDate := time.Now()
+	offset := int(reportDate.Weekday()) - 1
+	start := reportDate.AddDate(0, 0, -offset)
 
 	i := 0
 	ctx := 0
@@ -38,7 +39,7 @@ func Check() models.Report {
 	log.Println(result)
 	result += "Belegte Tage: " + fmt.Sprint(ctx) + "\n" + result
 
-	return models.Report{Content: result, Days: ctx}
+	return models.Report{Content: result, Days: ctx, ReportDate: reportDate}
 }
 
 func occupied(s bool) string {
