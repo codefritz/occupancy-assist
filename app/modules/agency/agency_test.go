@@ -1,4 +1,4 @@
-package strandsommer
+package agency
 
 import "testing"
 

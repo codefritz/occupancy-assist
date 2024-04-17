@@ -1,4 +1,5 @@
-package strandsommer
+// Package agency implents http client and json processing to featch a calendar and return a report.
+package agency
 
 import (
 	"encoding/json"
@@ -16,7 +17,6 @@ func Check() Report {
 	log.Print("Start fetching occupancy data...")
 	url := os.Getenv("FEWO_URL")
 	strings := toOccupancyArray(fetchJson(url))
-
 	offset := int(time.Now().Weekday()) - 1
 	start := time.Now().AddDate(0, 0, -offset)
 
