@@ -9,11 +9,13 @@ import (
 	"net/http"
 	"os"
 	"time"
+	"github.com/codefritz/occupancy-assist/app/modules/models"
+
 )
 
 const MARKER_FREE = "Y"
 
-func Check() Report {
+func Check() models.Report {
 	log.Print("Start fetching occupancy data...")
 	url := os.Getenv("FEWO_URL")
 	strings := toOccupancyArray(fetchJson(url))
@@ -36,8 +38,7 @@ func Check() Report {
 	log.Println(result)
 	result += "Belegte Tage: " + fmt.Sprint(ctx) + "\n" + result
 
-	report := Report{Content: result, Days: ctx}
-	return report
+	return models.Report{Content: result, Days: ctx}
 }
 
 func occupied(s bool) string {
@@ -84,9 +85,4 @@ func toOccupancyArray(jsonStr string) []bool {
 		bools[i] = s != MARKER_FREE
 	}
 	return bools
-}
-
-type Report struct {
-	Content string
-	Days    int
 }

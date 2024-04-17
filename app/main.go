@@ -1,9 +1,9 @@
 package main
 
 import (
-	"main/modules/agency"
-	"main/modules/analytics"
-	"main/modules/mailout"
+	"github.com/codefritz/occupancy-assist/app/modules/agency"
+	"github.com/codefritz/occupancy-assist/app/modules/analytics"
+	"github.com/codefritz/occupancy-assist/app/modules/mailout"
 	"time"
 )
 
