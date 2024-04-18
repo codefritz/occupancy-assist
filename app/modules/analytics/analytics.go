@@ -13,7 +13,7 @@ import (
 var db *sql.DB
 
 func UpdateBookings(reportinDate time.Time, numDays int) {
-	log.Print("Store analytics data for date: %s ...", reportinDate)
+	log.Printf("Store analytics data for date: %s ...", reportinDate.String())
 
 	connect()
 
@@ -56,11 +56,9 @@ func connect() {
 	}
 
 	// For test we read user mail here.
-	var email string
-	if err := db.QueryRow("SELECT reproting_date FROM bookings_history limit 1").Scan(&email); err != nil {
+	if err := db.QueryRow("SELECT reproting_date FROM bookings_history limit 1"); err != nil {
 		fmt.Errorf("Error while reading %s", err)
 	}
-	fmt.Printf("Date: %s\n", email)
 
 	fmt.Println("Connected!")
 }

@@ -21,20 +21,23 @@ func Check() models.Report {
 	reportDate := time.Now()
 	offset := int(reportDate.Weekday()) - 1
 	start := reportDate.AddDate(0, 0, -offset)
+	numOccupied := 0
+	result := ""
 
-	i := 0
-	ctx := 0
-
-	result := "*** Belegungsplan ***\n\n"
-	for _, s := range strings {
-		date := start.AddDate(0, 0, i)
-		i++
-		if s {
-			ctx++
+	for ix, occcupied := range strings {
+		date := start.AddDate(0, 0, ix)
+		if occcupied {
+			numOccupied++
 		}
-		result += date.Format("2006-01-02") + ": " + occupied(s) + "\n"
+		result += date.Format("2006-01-02") + ": " + occupied(occcupied) + "\n"
 	}
-	return models.Report{Content: result, Days: ctx, ReportDate: reportDate}
+
+	log.Print("Finished fetching occupancy data.")
+	log.Println("Occupied days: ", numOccupied)
+	log.Println("Report date: ", reportDate)
+	log.Println("Report content: ", result)
+
+	return models.Report{Content: result, Days: numOccupied, ReportDate: reportDate}
 }
 
 func occupied(s bool) string {
