@@ -9,5 +9,5 @@ import (
 func main() {
 	report := agency.Check()
 	analytics.UpdateBookings(report.ReportDate, report.Days)
-	mailout.MailOut(report.Content)
+	mailout.MailOut(report)
 }

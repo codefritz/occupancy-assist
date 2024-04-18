@@ -4,13 +4,15 @@ import (
 	"log"
 	"net/smtp"
 	"os"
+	"fmt"
+	"github.com/codefritz/occupancy-assist/app/modules/models"
 )
 
 const MSG_INTRO = "Der aktuelle Buchungskalender zur Ferienwohnung Strandsommer E10.\n\n"
 const HEADER_SUBJECT = "Subject: Buchungskalender"
 const HEADER_END = "\n\n"
 
-func MailOut(content Report) {
+func MailOut(content models.Report) {
 
 	// smtp server configuration.
 	mailProps := mailProperties()
@@ -31,7 +33,7 @@ func MailOut(content Report) {
 }
 
 func overview(days int) string {
-	return "Belegte Tage: " + fmt.Sprint(ctx) + "\n"
+	return "Belegte Tage: " + fmt.Sprint(days) + "\n"
 }
 
 func intro() string {
