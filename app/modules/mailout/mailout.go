@@ -10,13 +10,13 @@ const MSG_INTRO = "Der aktuelle Buchungskalender zur Ferienwohnung Strandsommer 
 const HEADER_SUBJECT = "Subject: Buchungskalender"
 const HEADER_END = "\n\n"
 
-func MailOut(content string) {
+func MailOut(content Report) {
 
 	// smtp server configuration.
 	mailProps := mailProperties()
 
 	// Message.
-	message := []byte(mailHeaders() + intro() + content)
+	message := []byte(mailHeaders() + intro() + overview(content.Days) + content.Content)
 
 	// Authentication.
 	auth := smtp.PlainAuth(mailProps.from, mailProps.user, mailProps.password, mailProps.smtpHost)
@@ -28,6 +28,10 @@ func MailOut(content string) {
 		return
 	}
 	log.Println("Email Sent Successfully!")
+}
+
+func overview(days int) string {
+	return "Belegte Tage: " + fmt.Sprint(ctx) + "\n"
 }
 
 func intro() string {

@@ -27,7 +27,6 @@ func Check() models.Report {
 	ctx := 0
 
 	result := "*** Belegungsplan ***\n\n"
-
 	for _, s := range strings {
 		date := start.AddDate(0, 0, i)
 		i++
@@ -36,9 +35,6 @@ func Check() models.Report {
 		}
 		result += date.Format("2006-01-02") + ": " + occupied(s) + "\n"
 	}
-	log.Println(result)
-	result += "Belegte Tage: " + fmt.Sprint(ctx) + "\n" + result
-
 	return models.Report{Content: result, Days: ctx, ReportDate: reportDate}
 }
 
