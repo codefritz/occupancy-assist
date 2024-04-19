@@ -33,7 +33,7 @@ func MailOut(content models.Report) {
 }
 
 func overview(days int) string {
-	return "*** Belegungsplan ***\n\nBelegte Tage: " + fmt.Sprint(days) + "\n"
+	return "Belegte Tage: " + fmt.Sprint(days) + "\n\n*** Belegungsplan ***\n\n"
 }
 
 func intro() string {
