@@ -14,7 +14,7 @@ import (
 
 const MARKER_FREE = "Y"
 
-func Check() models.Report {
+func FetchReport() models.Report {
 	log.Print("Start fetching occupancy data...")
 	url := os.Getenv("FEWO_URL")
 	strings := toOccupancyArray(fetchJson(url))
@@ -29,7 +29,7 @@ func Check() models.Report {
 		if occcupied {
 			numOccupied++
 		}
-		result += date.Format("2006-01-02") + ": " + occupied(occcupied) + "\n"
+		result += date.Format("2006-01-02") + ": " + asString(occcupied) + "\n"
 	}
 
 	log.Print("Finished fetching occupancy data.")
@@ -38,13 +38,6 @@ func Check() models.Report {
 	log.Println("Report content: ", result)
 
 	return models.Report{Content: result, Days: numOccupied, ReportDate: reportDate}
-}
-
-func occupied(s bool) string {
-	if s {
-		return "belegt"
-	}
-	return "frei"
 }
 
 func fetchJson(url string) string {
@@ -84,4 +77,11 @@ func toOccupancyArray(jsonStr string) []bool {
 		bools[i] = s != MARKER_FREE
 	}
 	return bools
+}
+
+func asString(s bool) string {
+	if s {
+		return "belegt"
+	}
+	return "frei"
 }
