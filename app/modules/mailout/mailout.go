@@ -15,7 +15,7 @@ const HEADER_END = "\n\n"
 func MailOut(content models.Report) {
 
 	// smtp server configuration.
-	mailProps := mailProperties()
+	mailProps := smtpMailProperties()
 
 	// Message.
 	message := []byte(mailHeaders() + intro() + overview(content.Days) + content.Content)
@@ -45,7 +45,7 @@ func mailHeaders() string {
 		HEADER_END
 }
 
-func mailProperties() MailProperties {
+func smtpMailProperties() MailProperties {
 	return MailProperties{
 		from:     os.Getenv("MAIL_FROM"),
 		password: os.Getenv("MAIL_SCRT"),
