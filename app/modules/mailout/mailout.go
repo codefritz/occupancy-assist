@@ -1,30 +1,41 @@
 package mailout
 
 import (
+	"bytes"
+	"github.com/codefritz/occupancy-assist/app/modules/models"
 	"log"
 	"net/smtp"
 	"os"
-	"fmt"
-	"github.com/codefritz/occupancy-assist/app/modules/models"
+	"text/template"
 )
 
-const MSG_INTRO = "Der aktuelle Buchungskalender zur Ferienwohnung Strandsommer E10.\n\n"
 const HEADER_SUBJECT = "Subject: Buchungskalender"
 const HEADER_END = "\n\n"
+
+const BODY = `Der aktuelle Buchungskalender zur Ferienwohnung Strandsommer E10.\n\n
+Belegte Tage: {{.Days}}\n\n*** Belegungsplan ***\n\n`
 
 func MailOut(content models.Report) {
 
 	// smtp server configuration.
 	mailProps := smtpMailProperties()
 
+	body := MailBody{Days: content.Days}
+
+	buf, err := createMail(body)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
 	// Message.
-	message := []byte(mailHeaders() + intro() + overview(content.Days) + content.Content)
+	message := []byte(mailHeaders() + buf.String() + content.Content)
 
 	// Authentication.
 	auth := smtp.PlainAuth(mailProps.from, mailProps.user, mailProps.password, mailProps.smtpHost)
 
 	// Sending email.
-	err := smtp.SendMail(mailProps.smtpHost+":"+mailProps.smtpPort, auth, mailProps.from, mailProps.to, message)
+	err = smtp.SendMail(mailProps.smtpHost+":"+mailProps.smtpPort, auth, mailProps.from, mailProps.to, message)
 	if err != nil {
 		log.Println(err)
 		return
@@ -32,12 +43,23 @@ func MailOut(content models.Report) {
 	log.Println("Email Sent Successfully!")
 }
 
-func overview(days int) string {
-	return "Belegte Tage: " + fmt.Sprint(days) + "\n\n*** Belegungsplan ***\n\n"
+func createMail(body MailBody) (bytes.Buffer, error) {
+	var buf bytes.Buffer
+	bodyTemplate, err := template.New("mail").Parse(BODY)
+	if err != nil {
+		log.Println(err)
+		return bytes.Buffer{}, err
+	}
+	err = bodyTemplate.Execute(&buf, body)
+	if err != nil {
+		log.Println(err)
+		return bytes.Buffer{}, err
+	}
+	return buf, err
 }
 
-func intro() string {
-	return MSG_INTRO
+type MailBody struct {
+	Days int
 }
 
 func mailHeaders() string {
