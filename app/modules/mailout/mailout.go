@@ -9,19 +9,11 @@ import (
 	"text/template"
 )
 
-const HEADER_SUBJECT = "Subject: Buchungskalender"
-const HEADER_END = "\n\n"
-
-const BODY = `Der aktuelle Buchungskalender zur Ferienwohnung Strandsommer E10.\n\n
-Belegte Tage: {{.Days}}\n\n*** Belegungsplan ***\n\n`
-
 func MailOut(content models.Report) {
 
 	// smtp server configuration.
 	mailProps := smtpMailProperties()
-
 	body := MailBody{Days: content.Days}
-
 	buf, err := createMail(body)
 	if err != nil {
 		log.Println(err)
@@ -29,7 +21,7 @@ func MailOut(content models.Report) {
 	}
 
 	// Message.
-	message := []byte(mailHeaders() + buf.String() + content.Content)
+	message := []byte(buf.String() + content.Content)
 
 	// Authentication.
 	auth := smtp.PlainAuth(mailProps.from, mailProps.user, mailProps.password, mailProps.smtpHost)
@@ -44,8 +36,14 @@ func MailOut(content models.Report) {
 }
 
 func createMail(body MailBody) (bytes.Buffer, error) {
+	bodyTemplateContent, err := os.ReadFile("email_template.txt") // Specify the correct path
+	if err != nil {
+		log.Println(err)
+		return bytes.Buffer{}, err
+	}
+
 	var buf bytes.Buffer
-	bodyTemplate, err := template.New("mail").Parse(BODY)
+	bodyTemplate, err := template.New("mail").Parse(string(bodyTemplateContent))
 	if err != nil {
 		log.Println(err)
 		return bytes.Buffer{}, err
@@ -60,11 +58,6 @@ func createMail(body MailBody) (bytes.Buffer, error) {
 
 type MailBody struct {
 	Days int
-}
-
-func mailHeaders() string {
-	return HEADER_SUBJECT +
-		HEADER_END
 }
 
 func smtpMailProperties() MailProperties {

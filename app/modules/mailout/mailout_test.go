@@ -5,8 +5,13 @@ import (
 	"testing"
 )
 
-const EXPECTED_MAIL_BODY = `Der aktuelle Buchungskalender zur Ferienwohnung Strandsommer E10.\n\n
-Belegte Tage: 100\n\n*** Belegungsplan ***\n\n`
+const EXPECTED_MAIL_BODY = `Subject: Buchungskalender
+
+
+Der aktuelle Buchungskalender zur Ferienwohnung Strandsommer E10.
+Belegte Tage: 100
+*** Belegungsplan ***
+`
 
 func TestMailOut(t *testing.T) {
 	body := MailBody{Days: 100}
