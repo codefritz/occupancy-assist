@@ -36,7 +36,7 @@ func MailOut(content models.Report) {
 }
 
 func createMail(body MailBody) (bytes.Buffer, error) {
-	bodyTemplateContent, err := os.ReadFile("email_template.txt") // Specify the correct path
+	bodyTemplateContent, err := os.ReadFile("modules/mailout/email_template.txt") // Specify the correct path
 	if err != nil {
 		log.Println(err)
 		return bytes.Buffer{}, err
