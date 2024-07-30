@@ -19,17 +19,23 @@ func UpdateBookings(reportinDate time.Time, numDays int) {
 
 	query := "INSERT INTO `bookings_history` (`reporting_date`, `days_booked`) VALUES (?, ?);"
 	insert, err := db.Prepare(query)
+
 	if err != nil {
 		log.Fatalf("impossible insert bookings_history: %s", err)
+		return
 	}
 	resp, err := insert.Exec(reportinDate, numDays)
 	insert.Close()
-
 	if err != nil {
 		log.Fatal(err)
+		return
 	}
 
-	log.Println(resp.LastInsertId())
+	lastInsertId, err := resp.LastInsertId()
+	if err != nil {
+		log.Fatalf("Error getting LastInsertId: %s", err)
+	}
+	fmt.Printf("LastInsertId: %d, Error: %v\n", lastInsertId, err)
 }
 func connect() {
 	// ssh -N -L 3306:kbatchdb.k-cloud.io:3306 acharton@shell001.ek-prod.dus1.cloud
