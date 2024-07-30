@@ -27,7 +27,7 @@ func UpdateBookings(reportinDate time.Time, numDays int) {
 	resp, err := insert.Exec(reportinDate, numDays)
 	insert.Close()
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("error while storing data: %s", err)
 		return
 	}
 
