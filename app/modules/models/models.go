@@ -1,9 +1,11 @@
 package models
 
-import ("time")
+import (
+	"time"
+)
 
 type Report struct {
 	ReportDate time.Time
-	Content string
-	Days    int
+	Details    string
+	Days       int
 }

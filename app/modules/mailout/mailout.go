@@ -21,7 +21,7 @@ func MailOut(content models.Report) {
 	}
 
 	// Message.
-	message := []byte(buf.String() + content.Content)
+	message := []byte(buf.String() + content.Details)
 
 	// Authentication.
 	auth := smtp.PlainAuth(mailProps.from, mailProps.user, mailProps.password, mailProps.smtpHost)

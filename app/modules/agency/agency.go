@@ -3,13 +3,12 @@ package agency
 
 import (
 	"encoding/json"
+	"github.com/codefritz/occupancy-assist/app/modules/models"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
 	"time"
-	"github.com/codefritz/occupancy-assist/app/modules/models"
-
 )
 
 const MARKER_FREE = "Y"
@@ -37,7 +36,7 @@ func FetchReport() models.Report {
 	log.Println("Report date: ", reportDate)
 	log.Println("Report content: ", result)
 
-	return models.Report{Content: result, Days: numOccupied, ReportDate: reportDate}
+	return models.Report{Details: result, Days: numOccupied, ReportDate: reportDate}
 }
 
 func fetchJson(url string) string {
