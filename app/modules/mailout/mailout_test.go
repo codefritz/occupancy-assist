@@ -10,6 +10,7 @@ const EXPECTED_MAIL_BODY = `Subject: Buchungskalender
 
 Der aktuelle Buchungskalender zur Ferienwohnung Strandsommer E10.
 Belegte Tage: 100
+
 *** Belegungsplan ***
 `
 
