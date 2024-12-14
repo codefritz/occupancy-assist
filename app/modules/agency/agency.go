@@ -4,7 +4,7 @@ package agency
 import (
 	"encoding/json"
 	"github.com/codefritz/occupancy-assist/app/modules/models"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -48,7 +48,7 @@ func fetchJson(url string) string {
 	}
 	defer resp.Body.Close()
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		log.Fatal(err)
 	}
