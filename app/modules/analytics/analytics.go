@@ -63,7 +63,7 @@ func connect() {
 
 	// For test we read user mail here.
 	if err := db.QueryRow("SELECT reproting_date FROM bookings_history limit 1"); err != nil {
-		fmt.Errorf("Error while reading %s", err)
+		fmt.Errorf("error while reading: %s", err)
 	}
 
 	fmt.Println("Connected!")

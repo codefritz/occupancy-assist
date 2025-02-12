@@ -1,4 +1,4 @@
-// Package agency implents http client and json processing to featch a calendar and return a report.
+// Package agency implents http client and json processing to fetch a calendar and return a report.
 package agency
 
 import (
