@@ -1,4 +1,4 @@
-Subject: Buchungskalender
+Subject: Buchungskalender (Belegte Tage: {{.Days}})
 
 
 Der aktuelle Buchungskalender zur Ferienwohnung Strandsommer E10.

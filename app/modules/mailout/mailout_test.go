@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-const EXPECTED_MAIL_BODY = `Subject: Buchungskalender
+const EXPECTED_MAIL_BODY = `Subject: Buchungskalender (Belegte Tage: 100)
 
 
 Der aktuelle Buchungskalender zur Ferienwohnung Strandsommer E10.
