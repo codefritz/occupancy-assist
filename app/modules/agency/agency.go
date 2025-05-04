@@ -14,7 +14,7 @@ import (
 const MARKER_FREE = "Y"
 
 func FetchReport() models.Report {
-	log.Print("Start fetching occupancy data...")
+	log.Print("Start fetching occupancy data.")
 	url := os.Getenv("FEWO_URL")
 	strings := toOccupancyArray(fetchJson(url))
 	reportDate := time.Now()
