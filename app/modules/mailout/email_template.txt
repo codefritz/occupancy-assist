@@ -1,7 +1,7 @@
 Subject: Buchungskalender (Belegte Tage: {{.Days}})
 
-
-Der aktuelle Buchungskalender zur Ferienwohnung Strandsommer E10.
+Guten Morgen!
+Anbei der aktuelle Buchungskalender zur Ferienwohnung Strandsommer E10.
 Belegte Tage: {{.Days}}
 
 *** Belegungsplan ***
