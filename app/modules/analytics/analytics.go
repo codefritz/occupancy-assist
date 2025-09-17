@@ -21,15 +21,19 @@ func UpdateBookings(reportinDate time.Time, numDays int) {
 	insert, err := db.Prepare(query)
 
 	if err != nil {
-		log.Fatalf("impossible insert bookings_history: %s", err)
+		log.Fatalf("Impossible insert bookings_history: %s", err)
 		return
 	}
 	resp, err := insert.Exec(reportinDate, numDays)
 	insert.Close()
-	if err != nil {
-		log.Fatalf("error while storing data: %s", err)
-		return
-	}
+  if err != nil {
+      if mysqlErr, ok := err.(*mysql.MySQLError); ok && mysqlErr.Number == 1062 {
+          log.Printf("Duplicate entry for reporting_date: %s, skipping insert.", reportinDate)
+          return
+      }
+      log.Fatalf("Error while storing data: %s", err)
+      return
+  }
 
 	lastInsertId, err := resp.LastInsertId()
 	if err != nil {
