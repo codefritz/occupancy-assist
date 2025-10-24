@@ -23,7 +23,7 @@ func MailOut(content models.Report) {
 	mailProps := smtpMailProperties()
 
   // Authentication.
-  conn, err := net.Dial("tcp", mailProps.smtpHost ":" mailProps.smtpPort)
+  conn, err := net.Dial("tcp", mailProps.smtpHost+":"+mailProps.smtpPort)
   if err != nil {
       log.Println(err)
   }
