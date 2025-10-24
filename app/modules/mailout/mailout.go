@@ -67,7 +67,7 @@ func smtpMailProperties() MailProperties {
 		user:     os.Getenv("MAIL_USER"),
 		to:       []string{os.Getenv("MAIL_TO")},
 		smtpHost: os.Getenv("MAIL_HOST"),
-		smtpPort: "25",
+		smtpPort: os.Getenv("MAIL_PORT"),
 	}
 }
 
