@@ -9,5 +9,5 @@ import (
 func main() {
 	report := agency.FetchReport()
 	analytics.UpdateBookings(report.ReportDate, report.Days)
-	mailout.MailOut(report)
+	// mailout.MailOut(report)
 }
