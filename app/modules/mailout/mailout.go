@@ -6,69 +6,13 @@ import (
 	"log"
 	"net/smtp"
 	"os"
-  "crypto/tls"
-  "errors"
-  "net"
 	"text/template"
 )
-
-type loginAuth struct {
-    username, password string
-}
-
-func LoginAuth(username, password string) smtp.Auth {
-    return &loginAuth{username, password}
-}
-
-
-func (a *loginAuth) Start(server *smtp.ServerInfo) (string, []byte, error) {
-    return "LOGIN", []byte(a.username), nil
-}
-
-func (a *loginAuth) Next(fromServer []byte, more bool) ([]byte, error) {
-    if more {
-        switch string(fromServer) {
-        case "Username:":
-            return []byte(a.username), nil
-        case "Password:":
-            return []byte(a.password), nil
-        default:
-            return nil, errors.New("Unknown from server")
-        }
-    }
-    return nil, nil
-}
 
 func MailOut(content models.Report) {
 
 	// smtp server configuration.
 	mailProps := smtpMailProperties()
-
-  // Authentication.
-  conn, err := net.Dial("tcp", mailProps.smtpHost+":"+mailProps.smtpPort)
-  if err != nil {
-      log.Println(err)
-  }
-
-  c, err := smtp.NewClient(conn, mailProps.smtpHost)
-  if err != nil {
-      println(err)
-  }
-
-  tlsconfig := &tls.Config{
-      ServerName: mailProps.smtpHost,
-  }
-
-  if err = c.StartTLS(tlsconfig); err != nil {
-      log.Println(err)
-  }
-
-  auth := LoginAuth(mailProps.user, mailProps.password)
-
-  if err = c.Auth(auth); err != nil {
-      log.Println(err)
-  }
-
 	body := MailBody{Days: content.Days}
 	buf, err := createMail(body)
 	if err != nil {
@@ -78,6 +22,9 @@ func MailOut(content models.Report) {
 
 	// Message.
 	message := []byte(buf.String() + content.Details)
+
+	// Authentication.
+	auth := smtp.PlainAuth(mailProps.from, mailProps.user, mailProps.password, mailProps.smtpHost)
 
 	// Sending email.
 	err = smtp.SendMail(mailProps.smtpHost+":"+mailProps.smtpPort, auth, mailProps.from, mailProps.to, message)
