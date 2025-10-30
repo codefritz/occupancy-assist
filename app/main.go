@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/codefritz/occupancy-assist/app/modules/agency"
 	"github.com/codefritz/occupancy-assist/app/modules/analytics"
-	"github.com/codefritz/occupancy-assist/app/modules/mailout"
+	// "github.com/codefritz/occupancy-assist/app/modules/mailout"
 )
 
 func main() {
