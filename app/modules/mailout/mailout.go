@@ -4,11 +4,12 @@ import (
 	"bytes"
 	"crypto/tls"
 	"fmt"
-	"github.com/codefritz/occupancy-assist/app/modules/models"
 	"log"
 	"net/smtp"
 	"os"
 	"text/template"
+
+	"github.com/codefritz/occupancy-assist/app/modules/models"
 )
 
 func MailOut(content models.Report) {
@@ -128,7 +129,7 @@ func sendEmailViaOutlook(mailProps MailProperties, message []byte) error {
 	// Connect to SMTP server (plain connection first)
 	conn, err := smtp.Dial(smtpServer + ":" + smtpPort)
 	if err != nil {
-		return fmt.Errorf("failed to connect to SMTP server: %v", err)
+		return fmt.Errorf("Failed to connect to SMTP server: %v", err)
 	}
 	defer conn.Close()
 
@@ -138,7 +139,7 @@ func sendEmailViaOutlook(mailProps MailProperties, message []byte) error {
 	}
 
 	if err = conn.StartTLS(tlsConfig); err != nil {
-		return fmt.Errorf("failed to start TLS: %v", err)
+		return fmt.Errorf("Failed to start TLS: %v", err)
 	}
 
 	// Authenticate using PLAIN auth (works for App Passwords)
@@ -149,30 +150,30 @@ func sendEmailViaOutlook(mailProps MailProperties, message []byte) error {
 
 	// Set sender
 	if err = conn.Mail(mailProps.from); err != nil {
-		return fmt.Errorf("failed to set sender: %v", err)
+		return fmt.Errorf("Failed to set sender: %v", err)
 	}
 
 	// Set recipients
 	for _, to := range mailProps.to {
 		if err = conn.Rcpt(to); err != nil {
-			return fmt.Errorf("failed to set recipient %s: %v", to, err)
+			return fmt.Errorf("Failed to set recipient %s: %v", to, err)
 		}
 	}
 
 	// Send message
 	writer, err := conn.Data()
 	if err != nil {
-		return fmt.Errorf("failed to get data writer: %v", err)
+		return fmt.Errorf("Failed to get data writer: %v", err)
 	}
 
 	_, err = writer.Write(message)
 	if err != nil {
-		return fmt.Errorf("failed to write message: %v", err)
+		return fmt.Errorf("Failed to write message: %v", err)
 	}
 
 	err = writer.Close()
 	if err != nil {
-		return fmt.Errorf("failed to close writer: %v", err)
+		return fmt.Errorf("Failed to close writer: %v", err)
 	}
 
 	return nil
