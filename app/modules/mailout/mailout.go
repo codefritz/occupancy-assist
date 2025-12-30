@@ -112,7 +112,7 @@ func createEmailMessage(mailProps MailProperties, body string) []byte {
 	return []byte(message)
 }
 
-// sendEmailViaOutlook sends email using Outlook SMTP with proper TLS configuration
+// sendEmailViaOutlook sends email using Outlook SMTP with STARTTLS
 func sendEmailViaOutlook(mailProps MailProperties, message []byte) error {
 	// Outlook/Office365 SMTP settings
 	smtpServer := mailProps.smtpHost
@@ -125,45 +125,42 @@ func sendEmailViaOutlook(mailProps MailProperties, message []byte) error {
 		smtpPort = "587"
 	}
 
-	// Create TLS config
-	tlsConfig := &tls.Config{
-		ServerName: smtpServer,
-	}
-
-	// Connect to SMTP server
-	conn, err := tls.Dial("tcp", smtpServer+":"+smtpPort, tlsConfig)
+	// Connect to SMTP server (plain connection first)
+	conn, err := smtp.Dial(smtpServer + ":" + smtpPort)
 	if err != nil {
 		return fmt.Errorf("failed to connect to SMTP server: %v", err)
 	}
 	defer conn.Close()
 
-	// Create SMTP client
-	client, err := smtp.NewClient(conn, smtpServer)
-	if err != nil {
-		return fmt.Errorf("failed to create SMTP client: %v", err)
+	// Start TLS (STARTTLS)
+	tlsConfig := &tls.Config{
+		ServerName: smtpServer,
 	}
-	defer client.Close()
+
+	if err = conn.StartTLS(tlsConfig); err != nil {
+		return fmt.Errorf("failed to start TLS: %v", err)
+	}
 
 	// Authenticate using PLAIN auth (works for App Passwords)
 	auth := smtp.PlainAuth("", mailProps.user, mailProps.password, smtpServer)
-	if err = client.Auth(auth); err != nil {
+	if err = conn.Auth(auth); err != nil {
 		return fmt.Errorf("authentication failed: %v", err)
 	}
 
 	// Set sender
-	if err = client.Mail(mailProps.from); err != nil {
+	if err = conn.Mail(mailProps.from); err != nil {
 		return fmt.Errorf("failed to set sender: %v", err)
 	}
 
 	// Set recipients
 	for _, to := range mailProps.to {
-		if err = client.Rcpt(to); err != nil {
+		if err = conn.Rcpt(to); err != nil {
 			return fmt.Errorf("failed to set recipient %s: %v", to, err)
 		}
 	}
 
 	// Send message
-	writer, err := client.Data()
+	writer, err := conn.Data()
 	if err != nil {
 		return fmt.Errorf("failed to get data writer: %v", err)
 	}
